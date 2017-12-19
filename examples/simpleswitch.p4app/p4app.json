@@ -1,0 +1,26 @@
+{
+  "program": "simple_router.p4",
+  "language": "p4-16",
+  "targets": {
+    "multiswitch": {
+      "num-hosts": 2,
+      "cli": true,
+      "auto-control-plane": true,
+      "links": [
+        ["h1", "s1"],
+        ["s1", "h2"]
+      ],
+      "switches": {
+        "s1": {
+          "commands": [
+            "table_add ipv4_lpm set_nhop 10.0.0.1/32 => 1",
+            "table_add ipv4_lpm set_nhop 10.0.0.2/32 => 2",
+            "table_add arp_forward set_mac 10.0.0.1/32 => 1",
+            "table_add arp_forward set_mac 10.0.0.2/32 => 2"
+          ]
+        }
+      },
+      "topo_module": "mytopo"
+    }
+  }
+}
