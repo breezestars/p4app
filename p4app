@@ -14,7 +14,8 @@
 # limitations under the License.
 
 P4APP_IMAGE=${P4APP_IMAGE:-p4lang/p4app:latest}
-
+P4APP_PATH=$(realpath $0)
+DOCKER_SCRIPTS=$(dirname $P4APP_PATH)/docker/scripts
 
 myrealpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
@@ -52,6 +53,7 @@ function run-p4app {
   APP_TO_RUN=/tmp/app.tar.gz
   docker run --privileged --interactive --tty --rm \
             --name "p4app_$RANDOM" \
+            -v $DOCKER_SCRIPTS:/scripts \
             -v $1:$APP_TO_RUN \
             -v "$P4APP_LOGDIR":/tmp/p4app_logs \
              $P4APP_IMAGE $APP_TO_RUN "${@:2}"
