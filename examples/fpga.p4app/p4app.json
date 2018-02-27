@@ -1,0 +1,10 @@
+{
+  "program": "fpga.p4",
+  "language": "p4-16",
+  "targets": {
+    "mininet": {
+      "num-hosts": 1,
+      "switch-config": "fpga.config"
+    }
+  }
+}

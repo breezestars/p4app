@@ -19,6 +19,7 @@ from mininet.net import Mininet
 from mininet.topo import Topo
 from mininet.log import setLogLevel, info
 from mininet.cli import CLI
+from mininet.link import Intf
 
 from p4_mininet import P4Switch, P4Host
 
@@ -67,9 +68,11 @@ class SingleSwitchTopo(Topo):
         for h in xrange(n):
             host = self.addHost('h%d' % (h + 1),
                                 ip = "10.0.%d.10/24" % h,
-                                mac = '00:04:00:00:00:%02x' %h)
+                                mac = '12:34:00:00:00:%02x' %h)
             print "Adding host", str(host)
             self.addLink(host, switch)
+
+
 
 def main():
     num_hosts = args.num_hosts
@@ -85,6 +88,9 @@ def main():
                   host = P4Host,
                   switch = P4Switch,
                   controller = None)
+    s1=net.get('s1')
+    Intf( "eth1", node=s1 )
+    Intf( "eth2", node=s1 )
     net.start()
 
 

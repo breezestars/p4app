@@ -1,0 +1,38 @@
+# Implementing FPGA
+fpga.config - the command to set flow in p4
+
+command format:
+table_add <table_name> <action> <match_field> => <parameters>...  <priority>
+
+example:
+table_add fpga decap 52:54:00:00:00:00&&&ff:ff:00:00:00:00 => 00:00:00:00:de:fa 2 20
+Add flow to table "fpga" and the action is "decap".
+The match filed is use ternary type so "52:54:00:00:00:00&&&ff:ff:00:00:00:00" means match the first 2 bytes "52:54".
+"00:00:00:00:de:fa 2" in this example, "00:00:00:00:de:fa" is the OF switch's my MAC and 2 is the port which connect to OF sw.
+"20" is the priority of this flow.
+
+TODO:
+1.Finish compute checksum.
+2.Reduce the code those can reuse.
+
+Hint:
+[Decap]
+When I replay the pcap file which contain GTP packets. I choose the docker0 as input interface so that switch will
+  receive the packets and packets will get into the pipeline.
+[Encap]
+I connect 2 hosts with 1 switch(h1<-->s1<-->h2). I change the h1's MAC as specific address and ping h2 so that I can
+  receive the GTP packets on h2.
+
+
+action encap(bit<32> tunnel_DstIp, bit<32> tunnel_SrcIp, bit<16> identification,
+               bit<8> dscp, bit<8> ttl, bit<16> udp_DstPort, bit<16> udp_SrcPort,
+               bit<8> gtp_Flags, bit<8> gtp_msgType);
+
+
+
+
+
+
+
+
+
